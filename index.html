@@ -3,94 +3,271 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Что такое сайт и как его сделать</title>
+<title>Что такое сайт и как его сделать — полный гайд</title>
 <style>
   :root{
-    --bg:#0f1116; --panel:#171a21; --line:#252a34;
+    --bg:#0f1116; --panel:#171a21; --panel2:#0b0d12; --line:#252a34;
     --text:#e6e8ee; --muted:#98a0b3; --accent:#4f8cff; --accent2:#38d39f;
+    --warn:#ffb648; --code:#cfe1ff;
+  }
+  body.light{
+    --bg:#f4f6fb; --panel:#ffffff; --panel2:#eef1f7; --line:#d8dee9;
+    --text:#1a1d24; --muted:#5c6474; --accent:#2563eb; --accent2:#0e9f6e;
+    --warn:#c07a00; --code:#1e3a8a;
   }
   *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;scroll-padding-top:80px}
   body{
     background:var(--bg); color:var(--text);
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
-    line-height:1.6; padding:24px;
+    line-height:1.65; padding:24px; transition:background .3s,color .3s;
   }
-  .wrap{max-width:820px;margin:0 auto}
+  .wrap{max-width:900px;margin:0 auto}
+
+  /* HEADER */
   header{
-    padding:32px 24px; margin-bottom:24px;
+    padding:36px 28px; margin-bottom:20px;
     background:linear-gradient(135deg,#1b2030,#12151c);
-    border:1px solid var(--line); border-radius:16px;
+    border:1px solid var(--line); border-radius:18px;
+    position:relative; overflow:hidden;
   }
-  h1{font-size:26px;margin-bottom:8px}
-  header p{color:var(--muted);font-size:14px}
-  nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+  body.light header{background:linear-gradient(135deg,#e8efff,#f8faff)}
+  header::after{
+    content:""; position:absolute; top:-60px; right:-60px;
+    width:220px; height:220px; border-radius:50%;
+    background:radial-gradient(circle,var(--accent),transparent 70%);
+    opacity:.25;
+  }
+  h1{font-size:28px;margin-bottom:10px}
+  header p{color:var(--muted);font-size:14px;max-width:600px}
+  .badge{
+    display:inline-block;font-size:11px;padding:4px 12px;border-radius:14px;
+    background:#20283a;color:var(--accent);margin-bottom:12px;letter-spacing:.5px;
+  }
+  body.light .badge{background:#dbe6ff}
+
+  /* THEME TOGGLE */
+  .theme-btn{
+    position:absolute;top:20px;right:20px;
+    background:var(--panel2);border:1px solid var(--line);
+    color:var(--text);padding:8px 14px;border-radius:20px;
+    cursor:pointer;font-size:13px;z-index:2;transition:.15s;
+  }
+  .theme-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+  /* SEARCH */
+  .search-box{
+    margin-top:18px;display:flex;gap:8px;
+    position:relative;z-index:2;
+  }
+  .search-box input{
+    flex:1;background:var(--panel2);border:1px solid var(--line);
+    color:var(--text);padding:10px 14px;border-radius:10px;
+    font:inherit;font-size:14px;
+  }
+  .search-box input:focus{outline:none;border-color:var(--accent)}
+  .search-result{
+    margin-top:10px;font-size:13px;color:var(--muted);
+  }
+
+  /* NAV */
+  nav{
+    display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px;
+    position:sticky;top:12px;z-index:10;
+    background:var(--bg);padding:10px 0;
+  }
   nav a{
     text-decoration:none;color:var(--text);font-size:13px;
     padding:8px 14px;border:1px solid var(--line);border-radius:20px;
-    transition:.15s;
+    transition:.15s;background:var(--panel);
   }
-  nav a:hover{border-color:var(--accent);color:var(--accent)}
+  nav a:hover,nav a.active{border-color:var(--accent);color:var(--accent)}
+
+  /* SECTIONS */
   section{
     background:var(--panel);border:1px solid var(--line);
-    border-radius:14px;padding:22px;margin-bottom:18px;
+    border-radius:14px;padding:24px;margin-bottom:18px;
+    transition:border-color .2s;
   }
-  h2{font-size:18px;margin-bottom:12px;color:var(--accent2)}
-  h3{font-size:15px;margin:16px 0 6px}
-  p{font-size:14px;margin-bottom:10px}
-  ul,ol{margin:0 0 12px 20px;font-size:14px}
+  section:target{border-color:var(--accent)}
+  h2{
+    font-size:19px;margin-bottom:14px;color:var(--accent2);
+    display:flex;align-items:center;gap:10px;
+  }
+  h2 .num{
+    font-size:12px;background:var(--panel2);border:1px solid var(--line);
+    padding:3px 10px;border-radius:10px;color:var(--accent);font-weight:600;
+  }
+  h3{font-size:15px;margin:18px 0 8px;color:var(--text)}
+  p{font-size:14px;margin-bottom:10px;color:var(--text)}
+  ul,ol{margin:0 0 12px 22px;font-size:14px}
   li{margin-bottom:6px}
   code{
-    background:#0b0d12;border:1px solid var(--line);
+    background:var(--panel2);border:1px solid var(--line);
     padding:2px 6px;border-radius:6px;font-size:13px;color:var(--accent2);
   }
   pre{
-    background:#0b0d12;border:1px solid var(--line);border-radius:10px;
-    padding:14px;overflow-x:auto;font-size:13px;color:#cfe1ff;margin:10px 0;
+    background:var(--panel2);border:1px solid var(--line);border-radius:10px;
+    padding:16px;overflow-x:auto;font-size:13px;color:var(--code);
+    margin:12px 0;line-height:1.5;
   }
-  .badge{
-    display:inline-block;font-size:11px;padding:3px 10px;border-radius:12px;
-    background:#20283a;color:var(--accent);margin-bottom:8px;
-  }
-  footer{text-align:center;color:var(--muted);font-size:12px;padding:20px 0}
-  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  @media(max-width:600px){.grid{grid-template-columns:1fr}}
+  a.link{color:var(--accent);text-decoration:none;border-bottom:1px dashed var(--accent)}
+
+  /* GRID CARDS */
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:12px 0}
   .card{
-    background:#0b0d12;border:1px solid var(--line);
+    background:var(--panel2);border:1px solid var(--line);
     border-radius:10px;padding:14px;font-size:13px;
+    transition:.15s;
+  }
+  .card:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .card strong{display:block;margin-bottom:6px;color:var(--accent)}
+  .card .icon{font-size:20px;display:block;margin-bottom:6px}
+
+  /* CALLOUTS */
+  .callout{
+    border-left:3px solid var(--accent);background:var(--panel2);
+    padding:12px 16px;border-radius:0 10px 10px 0;font-size:13px;
+    margin:12px 0;color:var(--text);
+  }
+  .callout.warn{border-color:var(--warn)}
+  .callout.tip{border-color:var(--accent2)}
+
+  /* TABLE */
+  table{
+    width:100%;border-collapse:collapse;font-size:13px;margin:12px 0;
+    border-radius:10px;overflow:hidden;
+  }
+  th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line)}
+  th{background:var(--panel2);color:var(--accent2);font-weight:600}
+  tr:hover td{background:var(--panel2)}
+
+  /* FAQ ACCORDION */
+  .faq-item{
+    border:1px solid var(--line);border-radius:10px;
+    margin-bottom:8px;overflow:hidden;background:var(--panel2);
+  }
+  .faq-q{
+    padding:14px 16px;cursor:pointer;font-size:14px;font-weight:500;
+    display:flex;justify-content:space-between;align-items:center;
+    user-select:none;
+  }
+  .faq-q:hover{color:var(--accent)}
+  .faq-q::after{content:"+";font-size:20px;color:var(--accent);transition:.2s}
+  .faq-item.open .faq-q::after{transform:rotate(45deg)}
+  .faq-a{
+    max-height:0;overflow:hidden;transition:max-height .3s ease;
+    padding:0 16px;font-size:13px;color:var(--muted);
+  }
+  .faq-item.open .faq-a{max-height:300px;padding:0 16px 14px}
+
+  /* PROGRESS BAR */
+  .progress{
+    position:fixed;top:0;left:0;height:3px;
+    background:linear-gradient(90deg,var(--accent),var(--accent2));
+    width:0%;z-index:100;transition:width .1s;
+  }
+
+  /* SCROLL TOP */
+  .scroll-top{
+    position:fixed;bottom:24px;right:24px;
+    width:46px;height:46px;border-radius:50%;
+    background:var(--accent);color:#fff;border:none;
+    font-size:20px;cursor:pointer;display:none;
+    align-items:center;justify-content:center;
+    box-shadow:0 6px 20px rgba(79,140,255,.4);
+    transition:.2s;z-index:50;
+  }
+  .scroll-top:hover{transform:translateY(-3px)}
+  .scroll-top.show{display:flex}
+
+  footer{
+    text-align:center;color:var(--muted);font-size:12px;
+    padding:28px 0;border-top:1px solid var(--line);margin-top:20px;
+  }
+  footer a{color:var(--accent);text-decoration:none}
+
+  @media(max-width:600px){
+    h1{font-size:22px}
+    body{padding:14px}
+    nav{position:static}
+    .theme-btn{position:static;margin-bottom:12px}
   }
 </style>
 </head>
 <body>
+
+<div class="progress" id="progress"></div>
+
 <div class="wrap">
 
   <header>
-    <span class="badge">Гайд для новичка</span>
+    <button class="theme-btn" id="themeBtn">🌙 Тема</button>
+    <span class="badge">ПОЛНЫЙ ГАЙД ДЛЯ НОВИЧКА</span>
     <h1>Что такое сайт и как его сделать</h1>
-    <p>Коротко и по делу: из чего состоит сайт, какие есть способы его создать и с чего начать.</p>
+    <p>Разбираем по полочкам: из чего состоит сайт, какие бывают способы создания, какие инструменты нужны, где взять хостинг и домен, как всё это выложить в интернет.</p>
+
+    <div class="search-box">
+      <input type="text" id="search" placeholder="Поиск по странице... (например: хостинг, HTML, домен)">
+    </div>
+    <div class="search-result" id="searchResult"></div>
   </header>
 
-  <nav>
+  <nav id="nav">
     <a href="#what">Что такое сайт</a>
+    <a href="#types">Виды сайтов</a>
     <a href="#how">Как сделать</a>
+    <a href="#tech">Технологии</a>
     <a href="#tools">Инструменты</a>
     <a href="#steps">Пошагово</a>
-    <a href="#host">Хостинг</a>
+    <a href="#host">Хостинг и домен</a>
+    <a href="#seo">Продвижение</a>
+    <a href="#mistakes">Ошибки</a>
     <a href="#faq">FAQ</a>
   </nav>
 
+  <!-- 1 -->
   <section id="what">
-    <h2>1. Что такое сайт</h2>
+    <h2><span class="num">01</span> Что такое сайт</h2>
     <p><strong>Сайт</strong> — это набор связанных веб-страниц, доступных в интернете по одному адресу (домену). Каждая страница — это файл (обычно HTML), который браузер скачивает с сервера и показывает пользователю.</p>
+    <p>Проще говоря: сайт = файлы + сервер + домен. Файлы лежат на сервере (хостинге), сервер отдаёт их браузеру, а домен — это удобный адрес, по которому пользователь находит сайт.</p>
+
     <div class="grid">
-      <div class="card"><strong>Фронтенд</strong><br>То, что видит пользователь: HTML, CSS, JavaScript.</div>
-      <div class="card"><strong>Бэкенд</strong><br>Серверная часть: логика, база данных, обработка запросов.</div>
-      <div class="card"><strong>Домен</strong><br>Адрес сайта, например <code>mysite.ru</code>.</div>
-      <div class="card"><strong>Хостинг</strong><br>Место, где физически лежат файлы сайта.</div>
+      <div class="card"><span class="icon">🎨</span><strong>Фронтенд</strong>То, что видит пользователь: HTML, CSS, JavaScript.</div>
+      <div class="card"><span class="icon">⚙️</span><strong>Бэкенд</strong>Серверная часть: логика, база данных, обработка запросов.</div>
+      <div class="card"><span class="icon">🌐</span><strong>Домен</strong>Адрес сайта, например <code>mysite.ru</code>.</div>
+      <div class="card"><span class="icon">📦</span><strong>Хостинг</strong>Место, где физически лежат файлы сайта.</div>
+      <div class="card"><span class="icon">🔒</span><strong>SSL</strong>Сертификат для HTTPS — защищённое соединение.</div>
+      <div class="card"><span class="icon">🗄️</span><strong>База данных</strong>Хранит контент, пользователей, заказы.</div>
     </div>
+
+    <div class="callout tip">💡 Любой сайт начинается с идеи: зачем он нужен и что должен делать. От этого зависит всё остальное.</div>
   </section>
 
+  <!-- 2 -->
+  <section id="types">
+    <h2><span class="num">02</span> Виды сайтов</h2>
+    <p>Прежде чем делать, определись с типом — от этого зависит выбор инструментов.</p>
+
+    <table>
+      <thead>
+        <tr><th>Тип</th><th>Назначение</th><th>Пример</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Лендинг</td><td>Одна страница для продажи</td><td>Курс, услуга, приложение</td></tr>
+        <tr><td>Визитка</td><td>Несколько страниц о компании</td><td>Сайт студии, мастера</td></tr>
+        <tr><td>Блог</td><td>Публикация статей</td><td>Личный блог, новости</td></tr>
+        <tr><td>Интернет-магазин</td><td>Продажа товаров</td><td>Ozon-подобные</td></tr>
+        <tr><td>Портфолио</td><td>Показать работы</td><td>Фотограф, дизайнер</td></tr>
+        <tr><td>Веб-сервис</td><td>Инструмент для задач</td><td>Онлайн-редактор, калькулятор</td></tr>
+        <tr><td>Форум / соцсеть</td><td>Общение пользователей</td><td>Reddit-подобные</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 3 -->
   <section id="how">
-    <h2>2. Как сделать сайт — три пути</h2>
+    <h2><span class="num">03</span> Как сделать сайт — три пути</h2>
 
     <h3>Способ 1. Конструктор (самый простой)</h3>
     <p>Берёшь готовый сервис, перетаскиваешь блоки мышкой, публикуешь. Кода не нужно.</p>
@@ -99,6 +276,7 @@
       <li><strong>WordPress</strong> — блоги, магазины, любые сайты.</li>
       <li><strong>Wix, Squarespace</strong> — универсальные.</li>
     </ul>
+    <div class="callout">Плюс: быстро и без кода. Минус: ограничения и абонплата.</div>
 
     <h3>Способ 2. Готовый шаблон + правка кода</h3>
     <p>Скачиваешь HTML-шаблон, меняешь текст и картинки. Уже нужны базовые знания HTML/CSS.</p>
@@ -106,8 +284,9 @@
     <h3>Способ 3. Написать с нуля (максимум контроля)</h3>
     <p>Сам пишешь HTML, CSS, JavaScript. Для сложных сайтов — добавляешь бэкенд (Node.js, Python, PHP).</p>
     <pre>&lt;!DOCTYPE html&gt;
-&lt;html&gt;
+&lt;html lang="ru"&gt;
   &lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
     &lt;title&gt;Мой сайт&lt;/title&gt;
   &lt;/head&gt;
   &lt;body&gt;
@@ -116,56 +295,187 @@
 &lt;/html&gt;</pre>
   </section>
 
+  <!-- 4 -->
+  <section id="tech">
+    <h2><span class="num">04</span> Технологии</h2>
+    <div class="grid">
+      <div class="card"><span class="icon">📄</span><strong>HTML</strong>Структура страницы: заголовки, тексты, кнопки, ссылки.</div>
+      <div class="card"><span class="icon">🎨</span><strong>CSS</strong>Внешний вид: цвета, шрифты, отступы, адаптивность.</div>
+      <div class="card"><span class="icon">⚡</span><strong>JavaScript</strong>Поведение: клики, анимации, запросы к серверу.</div>
+      <div class="card"><span class="icon">⚛️</span><strong>React / Vue</strong>Фреймворки для сложных интерфейсов.</div>
+      <div class="card"><span class="icon">🐍</span><strong>Python / Node.js</strong>Бэкенд-языки для серверной логики.</div>
+      <div class="card"><span class="icon">🗄️</span><strong>SQL / MongoDB</strong>Базы данных для хранения информации.</div>
+    </div>
+
+    <div class="callout tip">💡 Новичку достаточно HTML + CSS + чуть-чуть JS. Остальное — по мере роста проекта.</div>
+  </section>
+
+  <!-- 5 -->
   <section id="tools">
-    <h2>3. Инструменты</h2>
+    <h2><span class="num">05</span> Инструменты</h2>
     <ul>
       <li><strong>Редактор кода:</strong> VS Code, Sublime Text, Notepad++.</li>
-      <li><strong>Языки:</strong> HTML (структура), CSS (вид), JavaScript (поведение).</li>
-      <li><strong>Фреймворки:</strong> React, Vue — для сложных интерфейсов.</li>
       <li><strong>Графика:</strong> Figma, Photoshop — макеты и картинки.</li>
-      <li><strong>Git:</strong> контроль версий, GitHub — хранение кода.</li>
+      <li><strong>Git + GitHub:</strong> контроль версий, хранение кода.</li>
+      <li><strong>DevTools в браузере:</strong> отладка и тестирование.</li>
+      <li><strong>AI-помощники:</strong> генерация кода, текстов, идей.</li>
+      <li><strong>Менеджеры пакетов:</strong> npm, pip — установка библиотек.</li>
     </ul>
   </section>
 
+  <!-- 6 -->
   <section id="steps">
-    <h2>4. Пошаговый план</h2>
+    <h2><span class="num">06</span> Пошаговый план</h2>
     <ol>
-      <li>Придумай идею и цель сайта.</li>
-      <li>Нарисуй макет (хоть на бумаге).</li>
-      <li>Свёрстай страницы: HTML + CSS.</li>
-      <li>Добавь интерактив на JavaScript.</li>
-      <li>Проверь на телефоне и в разных браузерах.</li>
-      <li>Купи домен.</li>
-      <li>Загрузи файлы на хостинг.</li>
-      <li>Подключи домен к хостингу.</li>
-      <li>Проверь, что сайт открывается по адресу.</li>
+      <li><strong>Идея и цель</strong> — что за сайт, для кого, зачем.</li>
+      <li><strong>Макет</strong> — нарисуй на бумаге или в Figma.</li>
+      <li><strong>Структура</strong> — какие страницы и разделы будут.</li>
+      <li><strong>Вёрстка</strong> — HTML + CSS.</li>
+      <li><strong>Интерактив</strong> — JavaScript.</li>
+      <li><strong>Бэкенд</strong> — если нужны формы, база данных.</li>
+      <li><strong>Тестирование</strong> — на телефоне, в разных браузерах.</li>
+      <li><strong>Домен</strong> — покупка адреса.</li>
+      <li><strong>Хостинг</strong> — загрузка файлов на сервер.</li>
+      <li><strong>SSL</strong> — подключение HTTPS.</li>
+      <li><strong>Запуск</strong> — проверить, что всё работает.</li>
+      <li><strong>Развитие</strong> — обновление контента, SEO, реклама.</li>
     </ol>
   </section>
 
+  <!-- 7 -->
   <section id="host">
-    <h2>5. Хостинг: где разместить</h2>
+    <h2><span class="num">07</span> Хостинг и домен</h2>
+
+    <h3>Где разместить сайт</h3>
     <ul>
       <li><strong>GitHub Pages</strong> — бесплатно, для статических сайтов.</li>
-      <li><strong>Netlify / Vercel</strong> — бесплатно, удобно для проектов на React и не только.</li>
+      <li><strong>Netlify / Vercel</strong> — бесплатно, удобно для React и не только.</li>
       <li><strong>Обычный хостинг</strong> — Beget, Timeweb, REG.RU — для сайтов с бэкендом.</li>
       <li><strong>VPS</strong> — если нужен полный контроль над сервером.</li>
     </ul>
+
+    <h3>Где купить домен</h3>
+    <ul>
+      <li><strong>REG.RU, Timeweb, Beget</strong> — ру-зона и международные.</li>
+      <li><strong>Namecheap, GoDaddy</strong> — зарубежные, дешевле.</li>
+      <li><strong>Freenom</strong> — бесплатные .tk, .ml, .ga (с ограничениями).</li>
+    </ul>
+
+    <div class="callout warn">⚠️ Домен нужно продлевать каждый год. Не забудь автоплатёж.</div>
+
+    <table>
+      <thead><tr><th>Тип хостинга</th><th>Цена</th><th>Для чего</th></tr></thead>
+      <tbody>
+        <tr><td>Статический (Netlify)</td><td>Бесплатно</td><td>Лендинги, портфолио</td></tr>
+        <tr><td>Виртуальный хостинг</td><td>100–500 ₽/мес</td><td>Сайты с CMS</td></tr>
+        <tr><td>VPS</td><td>300–1500 ₽/мес</td><td>Свои сервисы, магазины</td></tr>
+        <tr><td>Выделенный сервер</td><td>от 3000 ₽/мес</td><td>Крупные проекты</td></tr>
+      </tbody>
+    </table>
   </section>
 
+  <!-- 8 -->
+  <section id="seo">
+    <h2><span class="num">08</span> Продвижение (SEO)</h2>
+    <p>Чтобы сайт находили в поиске, нужно базовое SEO:</p>
+    <ul>
+      <li><strong>Заголовки</strong> — title и h1 с ключевыми словами.</li>
+      <li><strong>Описания</strong> — meta description для каждой страницы.</li>
+      <li><strong>Скорость</strong> — оптимизация картинок, кэш.</li>
+      <li><strong>Мобильная версия</strong> — обязательно.</li>
+      <li><strong>Контент</strong> — регулярные полезные статьи.</li>
+      <li><strong>Ссылки</strong> — внешние ссылки на сайт повышают доверие.</li>
+      <li><strong>Яндекс.Метрика и Google Analytics</strong> — статистика посещений.</li>
+    </ul>
+  </section>
+
+  <!-- 9 -->
+  <section id="mistakes">
+    <h2><span class="num">09</span> Частые ошибки новичков</h2>
+    <ul>
+      <li>❌ Сделать красиво, но без смысла — важно, что пользователь получает.</li>
+      <li>❌ Не проверить на телефоне — половина трафика с мобильных.</li>
+      <li>❌ Забыть про SSL — браузеры помечают сайт как «небезопасный».</li>
+      <li>❌ Не следить за скоростью — тяжёлые картинки отпугивают.</li>
+      <li>❌ Игнорировать SEO — сайт никто не найдёт.</li>
+      <li>❌ Нет аналитики — не понятно, что работает, а что нет.</li>
+      <li>❌ Забросить после запуска — сайт требует развития.</li>
+    </ul>
+  </section>
+
+  <!-- 10 -->
   <section id="faq">
-    <h2>6. Частые вопросы</h2>
-    <h3>Можно ли сделать сайт бесплатно?</h3>
-    <p>Да. GitHub Pages, Netlify, Vercel дают бесплатный хостинг. Домен можно взять бесплатный (например, на .tk), но лучше купить свой.</p>
-    <h3>Сколько времени займёт?</h3>
-    <p>Простой лендинг — 1–2 дня. Многостраничный сайт — от недели.</p>
-    <h3>Нужно ли учить программирование?</h3>
-    <p>Для конструктора — нет. Для своего сайта — да, хотя бы HTML и CSS.</p>
+    <h2><span class="num">10</span> Частые вопросы</h2>
+
+    <div class="faq-item">
+      <div class="faq-q">Можно ли сделать сайт бесплатно?</div>
+      <div class="faq-a">Да. GitHub Pages, Netlify, Vercel дают бесплатный хостинг. Домен можно взять бесплатный (например, .tk), но лучше купить свой — доверие выше.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Сколько времени займёт создание?</div>
+      <div class="faq-a">Простой лендинг — 1–2 дня. Многостраничный сайт — от недели. Магазин или сервис — от месяца.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Нужно ли учить программирование?</div>
+      <div class="faq-a">Для конструктора — нет. Для своего сайта — да, хотя бы HTML и CSS. JavaScript — по мере надобности.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Какой язык программирования выбрать?</div>
+      <div class="faq-a">Для фронтенда — JavaScript. Для бэкенда — Python или Node.js. Для старта — достаточно HTML + CSS + JS.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Чем отличается сайт от лендинга?</div>
+      <div class="faq-a">Лендинг — это одна страница с целью (продажа, регистрация). Сайт — обычно несколько страниц с разной информацией.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Что такое домен и хостинг?</div>
+      <div class="faq-a">Домен — адрес сайта (например, mysite.ru). Хостинг — место, где физически хранятся файлы сайта и откуда они отдаются пользователям.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Что такое SSL и зачем он нужен?</div>
+      <div class="faq-a">SSL — сертификат, который шифрует соединение. Без него браузеры пишут «не защищено», а поисковики понижают сайт в выдаче.</div>
+    </div>
   </section>
 
   <footer>
-    © 2026 · Простой гайд по созданию сайтов · Сделано вручную
+    © 2026 · Полный гайд по созданию сайтов · <a href="#what">Наверх к началу</a>
   </footer>
 
 </div>
-</body>
-</html>
+
+<button class="scroll-top" id="scrollTop">↑</button>
+
+<script>
+/* ===== ТЕМА ===== */
+const themeBtn = document.getElementById('themeBtn');
+const savedTheme = localStorage.getItem('theme');
+if(savedTheme === 'light') document.body.classList.add('light');
+themeBtn.textContent = document.body.classList.contains('light') ? '☀️ Тема' : '🌙 Тема';
+
+themeBtn.onclick = () => {
+  document.body.classList.toggle('light');
+  const isLight = document.body.classList.contains('light');
+  themeBtn.textContent = isLight ? '☀️ Тема' : '🌙 Тема';
+  localStorage.setItem('theme', isLight ? 'light' : 'dark');
+};
+
+/* ===== ПОИСК ===== */
+const search = document.getElementById('search');
+const searchResult = document.getElementById('searchResult');
+const sections = document.querySelectorAll('section');
+
+search.addEventListener('input', () => {
+  const q = search.value.trim().toLowerCase();
+  if(q.length < 2){
+    searchResult.textContent = '';
+    sections.forEach(s => s.style.display = '');
+    return;
+  }
+  let found = 0;
+  sections.forEach(s => {
+    const text = s.innerText.toLowerCase();
+    const match = text.includes(q);
+    s.style.display = match ? '' : 'none';
+    if(match) found++;
+  });
+  searchResult.textContent = found ? `Найдено разделов: ${found}` : 'Ничег
